@@ -9,21 +9,21 @@ const createCollege = async (req, res) => {
       const { name, fullName, logoLink } = requestBody
 
       if (!valid.isValidRequestBody(requestBody)) {
-         return res.status(400).send({ status: false, message: "Pls Provide RequestBody " })
+         return res.status(400).send({ status: false, message: "Pls Provide RequestBody" })
       }
      
       if(!valid.invalidInput(name)){
-        return res.status(400).send({ status: false, message: "Invalid Input" }) 
+        return res.status(400).send({ status: false, message: "Name is missing" }) 
       }
       if (!valid.isValidName(name)) {
          return res.status(400).send({ status: false, message: "Name is invalid" })
       }
       if(!valid.invalidInput(fullName)){
-        return res.status(400).send({ status: false, message: "Invalid Input" }) 
+        return res.status(400).send({ status: false, message: "FullName is missing" }) 
       }
 
       if (!valid.isValidFullName(fullName)) {
-         return res.status(400).send({ status: false, message: "Pls Provide Full  Name  " })
+         return res.status(400).send({ status: false, message: "FullName is invalid" })
       }
       if (!logoLink) {
          return res.status(400).send({ status: false, message: "Pls Provide Link for Logo  " })
@@ -40,15 +40,17 @@ const createCollege = async (req, res) => {
       const nameAlreadyUsed = await collegeModel.findOne({ name: name })
       if (!nameAlreadyUsed) {
          const collegeDetails = await collegeModel.create(requestBody)
-         return res.status(201).send({ status: true, data: collegeDetails })
+         let obj = {
+            name: collegeDetails.name, fullName: collegeDetails.fullName, logoLink: collegeDetails.logoLink, isDeleted: collegeDetails.isDeleted
+         }
+         return res.status(201).send({ status: true, data: obj })
       }
-      return res.status(400).send({ status: false, message: "Name Already Register" })
+      return res.status(400).send({ status: false, message: "Name Already Registered" })
 
-   } catch (err) {
-
-      return res.status(500).send({ status: false, message: err.message })
+   } catch (error) {
+return res.status(500).send({ status: false, message: error.message })
    }
 }
 
 
-module.exports={createCollege}
+module.exports = { createCollege }
