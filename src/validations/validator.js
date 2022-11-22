@@ -1,34 +1,32 @@
-const isRequiredInput = function (value) {
+const isValidRequestBody = function (requestBody) {
+    return Object.keys(requestBody).length > 0
+}
+const invalidInput = function (value) {
     if (typeof value === 'undefined' || value === null) return false
+    if(typeof value ==="string"&& value.trim().length===0) return false
     
     return true;
 }
-// const isValidUrl = (value)=> {
-//     var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
-//   '((([a-z\\d]([a-z\\d-][a-z\\d]))\\.)+[a-z]{2,}|'+ // validate domain name
-//   '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
-//   '(\\:\\d+)?(\\/[-a-z\\d%_.~+])'+ // validate port and path
-//   '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
-//   '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
-// return urlPattern.test(value);
-// }
-
-
-// const isValidUrl = (value)=> {
-//         var urlPattern = new RegExp("/^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]))?(?:\?([^#]))?(?:#(.*))?$/")
-//     return !!urlPattern.test(value);
-//     }
-
-const isValidInput = function(value){
-    if (typeof value !== 'string' || value.trim().length === 0) return false
-return true
+const isValidName = (value) => {
+//const nm = value.trim()
+    const regex =/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z])$/.test(value)
+    return regex
 }
 
- const isValidEmail= function(email) { 
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
-    return re.test(String(email).toLowerCase());
+const isValidFullName= (str) =>{
+    return /^[A-Za-z\s]*$/.test(str);
+  }
+  const isValidEmail = (email) => {
+    const regex = /^([a-zA-Z0-9_.]+@[a-z]+\.[a-z]{2,3})?$/.test(email)
+    return regex
 }
 
 
+const isValidMobile = (phone) => {
+   
+    let regex = /^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/.test(phone)
+    return regex
+}
 
-module.exports = { isValidRequestBody, isValidInput, isRequiredInput, isValidEmail }
+
+module.exports ={isValidRequestBody,invalidInput,isValidName,isValidMobile,isValidFullName,isValidEmail}
