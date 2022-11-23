@@ -69,7 +69,7 @@ Refer below sample
 ## Collections samples
 
 #### College
-```yaml
+```yaml 
 {
     "name" : "iith",
     "fullName" : "Indian Institute of Technology, Hyderabad",
