@@ -26,7 +26,7 @@ const createCollege = async (req, res) => {
          return res.status(400).send({ status: false, message: "FullName is invalid" })
       }
       if (!logoLink) {
-         return res.status(400).send({ status: false, message: "Pls Provide Link for Logo  " })
+         return res.status(400).send({ status: false, message: "Pls Provide Link for Logo" })
       }
       //validation for url
       let correctLink = false
@@ -41,7 +41,10 @@ const createCollege = async (req, res) => {
       if (!nameAlreadyUsed) {
          const collegeDetails = await collegeModel.create(requestBody)
          let obj = {
-            name: collegeDetails.name, fullName: collegeDetails.fullName, logoLink: collegeDetails.logoLink, isDeleted: collegeDetails.isDeleted
+            name: collegeDetails.name, 
+            fullName: collegeDetails.fullName, 
+            logoLink: collegeDetails.logoLink,
+             isDeleted: collegeDetails.isDeleted
          }
          return res.status(201).send({ status: true, data: obj })
       }

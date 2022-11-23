@@ -13,7 +13,7 @@ const isValidName = (value) => {
 }
 
 const isValidFullName = (str) =>{
-    return /^[A-Za-z\s]*$/.test(str);
+    return  /^(([a-zA-Z ](,)?)*)+$/.test(str);
   }
 
   const isValidEmail = (email) => {
