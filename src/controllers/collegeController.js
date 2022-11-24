@@ -28,7 +28,7 @@ const createCollege = async (req, res) => {
       if (!logoLink) {
          return res.status(400).send({ status: false, message: "Pls Provide Link for Logo" })
       }
-      //validation for url
+      //validation for url   
       let correctLink = false
       await axios.get(logoLink)
          .then((res) => { correctLink = true })

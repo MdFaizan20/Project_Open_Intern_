@@ -14,7 +14,7 @@ const createIntern = async function (req, res) {
             return res.status(400).send({ status: false, message: "Please provide correct name" })
         }
 
-        if (!valid.isValidFullName(name)) {
+        if (!valid.isValidName(name)) {
             return res.status(400).send({ status: false, message: "Name is invalid" })
         }
 
@@ -56,18 +56,20 @@ const createIntern = async function (req, res) {
         if (!isCollege) {
             return res.status(404).send({ status: false, message: "No college found" })
         }
-        let obj = {
-            collegeId: isCollege._id,
-            name: requestBody.name,
-            mobile: requestBody.mobile,
-            email: requestBody.email,
-            collegeName: requestBody.collegeName
-        }
+       
 
-        let createIntern = await internModel.create(obj)
-        let getIntern = await internModel.findOne(createIntern).select({ _id: 0, createdAt: 0, updatedAt: 0, __v: 0, collegeName: 0 })
-        return res.status(201).send({ status: true, data: getIntern })
+        let interCreation = await internModel.create(requestBody)
+   
+    let obj = {
+        isDeleted:interCreation.isDeleted,
+        name: interCreation.name,
+        mobile: interCreation.mobile,
+        email: interCreation.email,
+        collegeId: isCollege._id,
     }
+    return res.status(201).send({status:true,msg:"Intern creation Successfful",data:obj} )
+    }
+
     catch (errors) {
         return res.status(500).send({ status: false, message: errors.message })
     }
@@ -88,8 +90,8 @@ const getCollegeDetails = async function (req, res) {
         if (!savedData) {
             return res.status(404).send({ status: false, message: "No college found" })
         }
-        let Name = savedData._id
-        let savedData1 = await internModel.find({ collegeId: Name }).select({ createdAt: 0, isDeleted: 0, updatedAt: 0, collegeId: 0, __v: 0 })
+        let collegeObjId = savedData._id
+        let savedData1 = await internModel.find({ collegeId:collegeObjId}).select({ createdAt: 0, isDeleted: 0, updatedAt: 0, collegeId: 0, __v: 0 })
         let obj1 = {
             name: savedData.name,
             fullName: savedData.fullName,
