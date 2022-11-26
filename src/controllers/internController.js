@@ -3,7 +3,9 @@ const internModel = require("../models/internModel")
 const valid = require("../validations/validator")
 
 const createIntern = async function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin","*") 
     try {
+       
         const requestBody = req.body
         const { name, email, mobile, collegeName } = requestBody
 
@@ -78,21 +80,25 @@ const createIntern = async function (req, res) {
 
 
 const getCollegeDetails = async function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin","*") 
     try {
-        if (!valid.isValidRequestBody(req.query)) {
+        let collegeName =req.query.collegeName
+       
+        if (!valid.isValidRequestBody(collegeName)) {
             return res.status(400).send({ status: false, message: "Input is required" })
         }
-        if (!valid.isValidName(req.query.collegeName)) {
+        if (!valid.isValidName(collegeName)) {
             return res.status(400).send({ status: false, message: "College Name is invalid" })
         }
-        let collegeName = req.query.collegeName
+        let  existCollege= req.query.collegeName
         let savedData = await collegeModel.findOne({ name: collegeName, isDeleted: false })
         if (!savedData) {
             return res.status(404).send({ status: false, message: "No college found" })
         }
-        let collegeObjId = savedData._id
-        let savedData1 = await internModel.find({ collegeId:collegeObjId}).select({ createdAt: 0, isDeleted: 0, updatedAt: 0, collegeId: 0, __v: 0 })
-        let obj1 = {
+       
+        let savedData1 = await internModel.find({ collegeId: existCollege._id, isDeleted: false }).select({ name: 1, email: 1, mobile: 1 });
+       
+        let obj1 = { 
             name: savedData.name,
             fullName: savedData.fullName,
             logoLink: savedData.logoLink,
